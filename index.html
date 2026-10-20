@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="张书洋 / CageEcho，AI 产品经理。10 年以上互联网经验，关注 Agent、人机协同与交付验证。代表作：行策、途书旅记、知树。" />
+  <title>张书洋 | AI 产品经理</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* Colors —— 取自 Signal Board 原图 */
+      --paper: #F4FBFF;
+      --paper-2: #EAF3FA;
+      --card: #FFFFFF;
+      --ink: #37383D;
+      --ink-2: #66685F;
+      --ink-3: #8C8E86;
+      --line: #D0CDC3;
+      --grid: rgba(55, 56, 61, 0.055);
+      --blue: #5A75FB;
+      --blue-soft: #B8C5FC;
+      --blue-wash: #E8EDFF;
+      --lilac: #9F98CE;
+
+      /* Typography */
+      --font-display: 'Inter Tight', 'Helvetica Neue', Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-body: 'Inter Tight', ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+      --font-mono: 'JetBrains Mono', "SF Mono", Menlo, monospace;
+
+      --page-max-width: 1280px;
+      --nav-h: 72px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; overflow-x: clip; }
+    body {
+      font-family: var(--font-body);
+      background: var(--paper);
+      color: var(--ink);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: clip;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    .container { max-width: var(--page-max-width); margin: 0 auto; padding: 0 40px; }
+    section, article[id] { scroll-margin-top: calc(var(--nav-h) + 24px); }
+
+    /* 等距网格底纹 */
+    .iso-grid {
+      background-image:
+        repeating-linear-gradient(30deg, var(--grid) 0 1px, transparent 1px 46px),
+        repeating-linear-gradient(150deg, var(--grid) 0 1px, transparent 1px 46px);
+    }
+
+    /* ---------- 导航 ---------- */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(244, 251, 255, 0.86);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(55, 56, 61, 0.08);
+    }
+    nav { display: flex; align-items: center; height: var(--nav-h); gap: 24px; }
+    .logo { font-family: var(--font-display); font-weight: 900; font-size: 20px; letter-spacing: -0.04em; white-space: nowrap; }
+    .logo span { color: var(--blue); }
+    .nav-links { display: flex; align-items: center; gap: 30px; margin-left: auto; }
+    .nav-links a {
+      font-family: var(--font-mono); font-size: 13px; color: var(--ink-2);
+      letter-spacing: 0.04em; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-links small { color: var(--blue); margin-right: 4px; }
+    .menu-toggle { display: none; background: none; border: none; cursor: pointer; color: var(--ink); font-size: 1.5rem; }
+
+    /* ---------- 椭圆标签 / 按钮 ---------- */
+    .pill {
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%; white-space: nowrap;
+      font-family: var(--font-display); font-weight: 800; letter-spacing: -0.01em;
+    }
+    .pill-o { border: 1.5px solid var(--ink); background: var(--card); color: var(--ink); }
+    .pill-dark { background: var(--ink); color: #fff; }
+    .pill-blue { background: var(--blue); color: #fff; box-shadow: 0 18px 30px -14px rgba(90, 117, 251, .7); }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 30px; border-radius: 999px;
+      background: var(--ink); color: #fff;
+      font-size: 15px; font-weight: 700; letter-spacing: .01em;
+      border: 1.5px solid var(--ink); cursor: pointer;
+      transition: transform .2s, background .2s, border-color .2s;
+    }
+    .btn:hover { background: var(--blue); border-color: var(--blue); transform: translateY(-2px); }
+    .btn-blue { background: var(--blue); border-color: var(--blue); }
+    .btn-blue:hover { background: var(--ink); border-color: var(--ink); }
+    .btn-ghost { background: transparent; color: var(--ink); }
+    .btn-ghost:hover { color: #fff; }
+    .nav-cta { padding: 10px 22px; font-size: 14px; }
+
+    .ghost-link { font-weight: 700; position: relative; }
+    .ghost-link::after {
+      content: ''; position: absolute; left: 0; bottom: -3px; height: 2px; width: 0;
+      background: var(--blue); transition: width .25s;
+    }
+    .ghost-link:hover::after { width: 100%; }
+
+    .mono { font-family: var(--font-mono); }
+    .meta-text { font-size: 12px; line-height: 1.5; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+    .spark { position: absolute; color: var(--ink); font-size: 22px; line-height: 1; }
+    .spark.blue { color: var(--blue); }
+
+    /* 黑体渐隐字：右侧渐隐成浅灰 */
+    .fade-ink {
+      background: linear-gradient(90deg, var(--ink) 55%, #C3C6CE 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .fade-blue {
+      background: linear-gradient(90deg, var(--blue) 50%, #C9D3FF 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+
+    /* ---------- Hero（Signal Board） ---------- */
+    .hero { position: relative; padding: 36px 0 190px; overflow: hidden; }
+    .hero::after {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse at 30% 40%, transparent 30%, var(--paper) 85%);
+    }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-meta { display: grid; grid-template-columns: 1fr 1fr auto; gap: 24px; }
+    .hero-main { display: grid; grid-template-columns: 1.05fr .95fr; gap: 24px; margin-top: 18px; }
+    .hero-left, .hero-right { min-width: 0; }
+
+    .hero-name {
+      font-family: var(--font-display); font-weight: 900;
+      font-size: clamp(60px, 9.6vw, 140px);
+      line-height: .84; letter-spacing: -0.055em;
+    }
+    .hero-name .row2 { display: block; }
+    .hero-name .gap { display: inline-block; width: .22em; }
+    .hero-tag { margin-top: 26px; font-size: 13px; letter-spacing: .18em; color: var(--ink-2); }
+    .caret { animation: blink 1.1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .iso-desk { display: block; width: 100%; max-width: 560px; height: auto; margin: -40px 0 0 6%; }
+    .iso-caret { animation: blink 1.1s steps(1) infinite; }
+    .iso-bulb { animation: glow 3.2s ease-in-out infinite; transform-box: fill-box; }
+    @keyframes glow { 0%, 100% { opacity: .55; } 50% { opacity: 1; } }
+
+    .signal { position: relative; height: 330px; }
+    .arc-text { position: absolute; left: -12px; top: 6px; width: 330px; height: 330px; overflow: visible; }
+    .arc-text text { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: .11em; fill: var(--ink); }
+    .signal .pill-dark { position: absolute; right: 6%; top: 8px; width: 170px; height: 64px; font-size: 21px; transform: rotate(-3deg); }
+    .signal .p1 { position: absolute; left: 26%; top: 112px; width: 186px; height: 74px; font-size: 17px; transform: rotate(4deg); }
+    .signal .p2 { position: absolute; right: 2%; top: 92px; width: 182px; height: 70px; font-size: 17px; transform: rotate(-9deg); }
+    .signal .pill-blue {
+      position: absolute; left: 36%; top: 156px; width: 268px; height: 104px;
+      font-size: 27px; font-weight: 800; transform: rotate(-9deg);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .signal .pill-blue:hover { transform: rotate(-6deg) translateY(-4px) scale(1.03); }
+    .signal .s1 { left: 58%; top: 34px; }
+    .signal .s2 { right: 4%; top: 190px; font-size: 18px; }
+    .signal .s3 { left: 33%; top: 270px; font-size: 10px; }
+
+    .slogan { text-align: right; font-family: var(--font-display); font-weight: 900; line-height: .9; letter-spacing: -0.055em; }
+    .slogan .l1 { display: flex; justify-content: flex-end; align-items: center; gap: 22px; font-size: clamp(48px, 6vw, 84px); }
+    .slogan .l1 .mono { font-weight: 500; font-size: 11px; letter-spacing: .3em; color: var(--ink-2); }
+    .slogan .x { color: var(--ink-3); font-weight: 800; }
+    .slogan .l2 { display: block; font-size: clamp(48px, 6.8vw, 96px); }
+    .hero-lead { margin: 30px 0 0 auto; max-width: 470px; font-size: 17px; color: var(--ink-2); text-align: right; }
+    .hero-actions { display: flex; justify-content: flex-end; align-items: center; gap: 24px; margin-top: 26px; flex-wrap: wrap; }
+
+    .hero-foot { position: absolute; left: 0; right: 0; bottom: 30px; z-index: 2; }
+    .hero-foot .container { display: flex; justify-content: space-between; gap: 24px; }
+    .hero-foot .left { color: var(--blue); }
+
+    /* 斜向关键词带 */
+    .band-wrap { position: absolute; left: 0; right: 0; bottom: 60px; height: 140px; overflow: hidden; z-index: 1; pointer-events: none; }
+    .band {
+      position: absolute; left: -10%; width: 120%; top: 40px;
+      transform: rotate(-3.6deg);
+      border-top: 1px solid var(--lilac); border-bottom: 1px solid var(--lilac);
+      background: rgba(244, 251, 255, .78);
+      padding: 14px 0; overflow: hidden;
+    }
+    .band-track { display: flex; width: max-content; animation: marquee 38s linear infinite; }
+    .band-track span { font-family: var(--font-display); font-weight: 800; font-size: 22px; padding: 0 22px; white-space: nowrap; }
+    .band-track i { font-style: normal; color: var(--blue); font-size: 16px; align-self: center; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    /* ---------- 通用 section ---------- */
+    section { padding: 120px 0; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 10px;
+      font-family: var(--font-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 20px;
+    }
+    .eyebrow::before { content: '✦'; font-size: 12px; }
+    .display { font-family: var(--font-display); font-weight: 900; letter-spacing: -0.04em; line-height: 1.12; color: var(--ink); }
+    .section-heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; margin-bottom: 52px; }
+    .section-heading h2 { font-size: clamp(34px, 4.6vw, 60px); }
+    .section-heading h2 em { font-style: normal; color: var(--blue); }
+    .section-heading > p { max-width: 360px; color: var(--ink-2); font-size: 16px; line-height: 1.8; }
+    .section-alt { background: var(--paper-2); border-top: 1px solid rgba(55,56,61,.06); border-bottom: 1px solid rgba(55,56,61,.06); }
+
+    .card {
+      background: var(--card); border: 1.5px solid var(--ink); border-radius: 20px;
+      box-shadow: 6px 6px 0 var(--blue-wash);
+      transition: transform .25s, box-shadow .25s;
+    }
+    .card:hover { transform: translate(-2px, -2px); box-shadow: 9px 9px 0 var(--blue-soft); }
+    .content-label { display: block; font-family: var(--font-mono); color: var(--blue); font-size: 13px; letter-spacing: .04em; margin-bottom: 12px; }
+
+    /* ---------- 关于 ---------- */
+    .about-grid { display: grid; grid-template-columns: .85fr 1.15fr; gap: 60px; }
+    .about-grid h2 { font-size: clamp(36px, 4.8vw, 64px); }
+    .portrait { position: relative; margin-top: 40px; width: min(260px, 70%); }
+    .portrait img {
+      display: block; width: 100%; height: auto; border-radius: 20px;
+      border: 1.5px solid var(--ink); box-shadow: 8px 8px 0 var(--blue-wash);
+      background: var(--card);
+    }
+    .portrait-tag { position: absolute; right: -54px; bottom: 26px; width: 150px; height: 58px; font-size: 16px; transform: rotate(-8deg); }
+    .about-body p { font-size: 18px; color: var(--ink-2); line-height: 1.85; max-width: 600px; }
+    .about-body strong { color: var(--ink); }
+    .education-line { margin-top: 22px; font-family: var(--font-mono); font-size: 14px; color: var(--blue) !important; }
+    .skill-tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+    .skill-tags span {
+      border: 1.5px solid var(--ink); border-radius: 999px; padding: 6px 15px;
+      font-size: 14px; font-weight: 600; background: var(--card);
+    }
+    .skill-tags span:nth-child(3n+1) { background: var(--blue-wash); border-color: var(--blue); color: #3D55D8; }
+    .about-items { margin-top: 64px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+    .about-item { padding: 30px; }
+    .about-item .big { font-family: var(--font-display); font-weight: 900; font-size: 44px; letter-spacing: -0.04em; line-height: 1; }
+    .about-item h3 { font-size: 21px; font-weight: 800; margin: 16px 0 8px; }
+    .about-item p { font-size: 15px; color: var(--ink-2); line-height: 1.75; }
+
+    /* ---------- 经历 ---------- */
+    .experience-card { padding: 34px; margin-bottom: 24px; }
+    .experience-top { display: flex; justify-content: space-between; gap: 20px; align-items: baseline; }
+    .experience-top h3 { font-size: 26px; font-weight: 800; line-height: 1.4; }
+    .experience-top span { font-family: var(--font-mono); font-size: 14px; color: var(--ink-2); white-space: nowrap; }
+    .role-label { color: var(--blue); font-weight: 700; font-size: 15px; margin-top: 4px; }
+    .exp-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .exp-pair .experience-card { margin-bottom: 0; }
+    .exp-pair .experience-top h3 { font-size: 21px; }
+    .experience-card .case-metrics { margin: 4px 0 22px; }
+    .experience-card > p:not(.role-label) { color: var(--ink-2); font-size: 17px; line-height: 1.85; margin: 16px 0; }
+
+    details > summary { list-style: none; cursor: pointer; }
+    summary::-webkit-details-marker { display: none; }
+    .project-detail summary {
+      display: inline-flex; align-items: center; gap: 10px;
+      color: var(--blue); font-weight: 700; font-size: 15px; padding: 6px 0;
+    }
+    .project-detail summary::before {
+      content: '+'; display: inline-grid; place-items: center;
+      width: 26px; height: 20px; border-radius: 50%; border: 1.5px solid var(--blue);
+      font-size: 15px; line-height: 1; transition: transform .2s;
+    }
+    .project-detail[open] summary::before { transform: rotate(45deg); }
+    .project-detail > div { margin-top: 14px; padding-left: 18px; border-left: 2px solid var(--blue-soft); }
+    .project-detail p { font-size: 15.5px; color: var(--ink-2); line-height: 1.85; }
+    .project-detail p + p { margin-top: 12px; }
+    .project-detail b { color: var(--ink); font-weight: 700; }
+
+    .project-links { display: flex; flex-wrap: wrap; gap: 12px 26px; margin-top: 24px; }
+    .project-links a, .project-link { font-weight: 700; font-size: 15px; color: var(--ink); border-bottom: 1.5px solid var(--blue); padding-bottom: 1px; transition: color .2s; }
+    .project-links a:hover, .project-link:hover { color: var(--blue); }
+
+    /* ---------- 项目 ---------- */
+    .project { display: grid; grid-template-columns: .9fr 1.1fr; gap: 56px; padding: 64px 0; border-top: 1.5px solid var(--ink); }
+    .project:last-child { border-bottom: 1.5px solid var(--ink); }
+    .project-num { font-family: var(--font-mono); font-size: 13px; color: var(--blue); letter-spacing: .1em; }
+    .project-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(36px, 4.8vw, 64px); letter-spacing: -0.045em; line-height: 1.05; margin-top: 14px; }
+    .project-meta { margin-top: 16px; font-size: 14px; color: var(--ink-2); font-weight: 600; }
+    .project-body > p { font-size: 18px; color: var(--ink-2); line-height: 1.8; }
+    .case-metrics { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0; }
+    .case-metrics span {
+      padding: 10px 20px; border-radius: 50%; border: 1.5px solid var(--ink);
+      background: var(--card); font-weight: 800; font-size: 14px; white-space: nowrap;
+    }
+    .case-metrics span:first-child { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+    /* ---------- 方法（Skills） ---------- */
+    .note-list { border-top: 1.5px solid var(--ink); }
+    .note { border-bottom: 1.5px solid var(--ink); }
+    .note summary { display: grid; grid-template-columns: 52px 1fr 44px; gap: 20px; align-items: center; padding: 28px 8px; }
+    .note-number { font-family: var(--font-mono); font-size: 14px; color: var(--ink-3); }
+    .note strong { display: block; font-size: 22px; font-weight: 800; line-height: 1.45; }
+    .expand-icon {
+      display: grid; place-items: center; width: 44px; height: 30px; border-radius: 50%;
+      border: 1.5px solid var(--ink); font-size: 18px; font-weight: 700; transition: transform .2s, background .2s, color .2s;
+    }
+    .note summary:hover .expand-icon { background: var(--ink); color: #fff; }
+    .note[open] .expand-icon { transform: rotate(45deg); background: var(--blue); border-color: var(--blue); color: #fff; }
+    .note-content { padding: 0 60px 34px 80px; max-width: 960px; color: var(--ink-2); font-size: 16px; line-height: 1.9; }
+    .note-content p + p { margin-top: 10px; }
+    .note-content .project-link { display: inline-block; margin-top: 16px; }
+
+    /* ---------- 产品观 ---------- */
+    .resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+    .resource-card { display: flex; flex-direction: column; padding: 32px; }
+    .resource-card h3 { font-size: 25px; font-weight: 800; line-height: 1.45; margin: 6px 0 16px; }
+    .resource-card p { color: var(--ink-2); font-size: 16px; line-height: 1.85; }
+    .quote-band { margin-top: 56px; text-align: center; }
+    .quote-band p { font-family: var(--font-display); font-weight: 900; font-size: clamp(26px, 3.4vw, 44px); letter-spacing: -0.03em; line-height: 1.35; }
+    .quote-band em { font-style: normal; color: var(--blue); }
+
+    /* ---------- 联系 ---------- */
+    .contact-panel { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 40px; align-items: center; padding: 48px; }
+    .contact-title { font-family: var(--font-display); font-weight: 900; font-size: clamp(56px, 8vw, 112px); line-height: .9; letter-spacing: -0.055em; }
+    .contact-panel p { margin-top: 24px; font-size: 18px; color: var(--ink-2); }
+    .contact-mail { display: inline-block; margin-top: 10px; font-family: var(--font-mono); font-size: 17px; color: var(--blue); border-bottom: 1.5px solid var(--blue); overflow-wrap: anywhere; }
+    .contact-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .contact-art { position: relative; height: 260px; }
+    .contact-art .pill { position: absolute; }
+    .contact-art .c1 { left: 6%; top: 10px; width: 190px; height: 74px; font-size: 18px; transform: rotate(-6deg); }
+    .contact-art .c2 { right: 0; top: 90px; width: 210px; height: 86px; font-size: 22px; transform: rotate(5deg); }
+    .contact-art .c3 { left: 0; top: 170px; width: 170px; height: 66px; font-size: 17px; transform: rotate(-3deg); }
+    .contact-art .spark { right: 18%; top: 12px; }
+
+    /* ---------- Footer ---------- */
+    footer { border-top: 1.5px solid var(--ink); padding: 36px 0 48px; }
+    footer .container { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    footer p { font-size: 12px; }
+
+    .back-top {
+      position: fixed; right: 24px; bottom: 24px; z-index: 90;
+      width: 56px; height: 40px; border-radius: 50%;
+      background: var(--ink); color: #fff; border: none; font-size: 17px; cursor: pointer;
+      opacity: 0; pointer-events: none; transition: opacity .25s, background .2s;
+    }
+    .back-top:hover { background: var(--blue); }
+    .back-top.show { opacity: 1; pointer-events: auto; }
+
+    /* 进入动画（无 JS 时直接显示） */
+    .js .reveal { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    a:focus-visible, button:focus-visible, summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 5px; border-radius: 6px; }
+
+    /* ---------- 响应式 ---------- */
+    @media (max-width: 1080px) {
+      .nav-links { gap: 18px; }
+      .nav-cta { display: none; }
+      .signal .pill-blue { left: 30%; }
+    }
+    @media (max-width: 900px) {
+      .container { padding: 0 24px; }
+      .exp-pair { grid-template-columns: 1fr; gap: 0; }
+      .portrait { width: 200px; margin-top: 28px; }
+      .portrait-tag { right: -60px; width: 132px; height: 52px; font-size: 14px; }
+      .exp-pair .experience-card { margin-bottom: 24px; }
+      section { padding: 88px 0; }
+      .hero { padding-bottom: 200px; }
+      .hero-main { grid-template-columns: 1fr; gap: 8px; }
+      .iso-desk { max-width: 520px; margin: -10px auto 0; }
+      .signal { max-width: 560px; margin: 0 auto; }
+      .slogan, .hero-lead { text-align: left; margin-left: 0; }
+      .slogan .l1 { justify-content: flex-start; }
+      .hero-actions { justify-content: flex-start; }
+      .about-grid, .project { grid-template-columns: 1fr; gap: 28px; }
+      .about-items, .resource-grid { grid-template-columns: 1fr; }
+      .contact-panel { grid-template-columns: 1fr; padding: 32px; }
+      .contact-art { max-width: 380px; }
+    }
+    @media (max-width: 700px) {
+      :root { --nav-h: 64px; }
+      .container { padding: 0 16px; }
+      .nav-links {
+        position: absolute; top: var(--nav-h); left: 0; right: 0;
+        background: var(--paper); border-bottom: 1.5px solid var(--ink);
+        flex-direction: column; align-items: flex-start; padding: 20px 16px; gap: 18px; display: none;
+      }
+      .nav-links.open { display: flex; }
+      .menu-toggle { display: block; margin-left: auto; }
+      .hero { padding-top: 24px; }
+      .hero-meta { grid-template-columns: 1fr auto; }
+      .hero-meta .mid { display: none; }
+      .hero-name { font-size: clamp(56px, 19vw, 96px); }
+      .hero-tag { font-size: 11px; letter-spacing: .12em; }
+      .signal { height: 270px; }
+      .arc-text { width: 240px; height: 240px; left: -14px; top: 24px; }
+      .arc-text text { font-size: 15px; }
+      .signal .pill-dark { width: 124px; height: 48px; font-size: 16px; right: 2%; }
+      .signal .p1 { width: 132px; height: 54px; font-size: 14px; left: 30%; top: 86px; }
+      .signal .p2 { width: 128px; height: 52px; font-size: 14px; right: 0; top: 66px; }
+      .signal .pill-blue { width: 196px; height: 78px; font-size: 20px; left: 32%; top: 136px; }
+      .signal .s3 { top: 236px; }
+      .slogan .l1 { gap: 14px; }
+      .slogan .l1 .mono { display: none; }
+      .hero-lead { font-size: 16px; }
+      .band-track span { font-size: 17px; padding: 0 14px; }
+      .hero-foot .container { flex-direction: column; gap: 6px; }
+      .section-heading { display: block; }
+      .section-heading > p { margin-top: 18px; }
+      .experience-top { display: block; }
+      .experience-top span { display: block; margin-top: 6px; }
+      .experience-card, .about-item, .resource-card { padding: 24px; }
+      .project { padding: 48px 0; }
+      .note summary { grid-template-columns: 30px 1fr 40px; gap: 12px; padding: 22px 0; }
+      .note strong { font-size: 18px; }
+      .note-content { padding: 0 0 26px 0; }
+      .contact-panel { padding: 24px; }
+      .contact-art { height: 230px; }
+      .contact-art .c1 { width: 150px; height: 60px; font-size: 15px; }
+      .contact-art .c2 { width: 170px; height: 70px; font-size: 18px; }
+      .contact-art .c3 { width: 140px; height: 56px; font-size: 15px; top: 150px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <script>document.documentElement.classList.add('js');</script>
+
+  <header>
+    <nav class="container" aria-label="主导航">
+      <a href="#top" class="logo">CAGE<span>ECHO</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#about"><small>01</small>关于</a></li>
+        <li><a href="#experience"><small>02</small>经历</a></li>
+        <li><a href="#work"><small>03</small>作品</a></li>
+        <li><a href="#more"><small>04</small>更多实践</a></li>
+        <li><a href="#views"><small>05</small>产品观</a></li>
+        <li><a href="#contact"><small>06</small>联系</a></li>
+      </ul>
+      <a href="#contact" class="btn nav-cta">联系我</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">☰</button>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- Hero：Signal Board -->
+    <section class="hero iso-grid" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-meta">
+          <p class="meta-text">CageEcho — Personal Space<br>AI / Product / Agents</p>
+          <p class="meta-text mid">10+ years on the web.<br>Always in the making.</p>
+          <p class="meta-text">Est. 2014</p>
+        </div>
+
+        <div class="hero-main">
+          <div class="hero-left">
+            <h1 class="hero-name" id="hero-title">
+              <span class="sr-only">张书洋 Zhang Shuyang，AI 产品经理</span>
+              <span aria-hidden="true">SHU<span class="gap"></span><span class="fade-ink">YANG</span><span class="row2 fade-blue">.AI</span></span>
+            </h1>
+            <p class="hero-tag mono">[ IDEAS OUT OF THE CAGE<span class="caret">_</span> ]</p>
+            <svg class="iso-desk" viewBox="-204 -231 480 507" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="等距线稿：书桌上的笔记本电脑、显示器、键盘、鼠标和便签"><defs><filter id="isoBlur" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="8"/></filter></defs><g stroke-linejoin="round"><path d="M-43.3 -5.0 L251.1 155.0 L121.2 260.0 L-164.5 105.0 Z" fill="#DCE3EC" opacity=".55" filter="url(#isoBlur)"/><path d="M9.5 13.5 L1.7 18.0 L1.7 -102.0 L9.5 -106.5 Z" fill="#EEF2F7" stroke="#37383D" stroke-width="1.4" /><path d="M-6.1 13.5 L1.7 18.0 L1.7 -102.0 L-6.1 -106.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M1.7 -111.0 L9.5 -106.5 L1.7 -102.0 L-6.1 -106.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M245.1 149.5 L237.3 154.0 L237.3 34.0 L245.1 29.5 Z" fill="#EEF2F7" stroke="#37383D" stroke-width="1.4" /><path d="M229.5 149.5 L237.3 154.0 L237.3 34.0 L229.5 29.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M237.3 25.0 L245.1 29.5 L237.3 34.0 L229.5 29.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M-115.2 85.5 L-123.0 90.0 L-123.0 -30.0 L-115.2 -34.5 Z" fill="#EEF2F7" stroke="#37383D" stroke-width="1.4" /><path d="M-130.8 85.5 L-123.0 90.0 L-123.0 -30.0 L-130.8 -34.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M-123.0 -39.0 L-115.2 -34.5 L-123.0 -30.0 L-130.8 -34.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M120.4 221.5 L112.6 226.0 L112.6 106.0 L120.4 101.5 Z" fill="#EEF2F7" stroke="#37383D" stroke-width="1.4" /><path d="M104.8 221.5 L112.6 226.0 L112.6 106.0 L104.8 101.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M112.6 97.0 L120.4 101.5 L112.6 106.0 L104.8 101.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M259.8 30.0 L112.6 115.0 L112.6 107.0 L259.8 22.0 Z" fill="#EDF1F6" stroke="#37383D" stroke-width="1.6" /><path d="M-147.2 -35.0 L112.6 115.0 L112.6 107.0 L-147.2 -43.0 Z" fill="#F6F8FB" stroke="#37383D" stroke-width="1.6" /><path d="M0.0 -128.0 L259.8 22.0 L112.6 107.0 L-147.2 -43.0 Z" fill="#FFFFFF" stroke="#37383D" stroke-width="1.6" /><path d="M170.6 -11.5 L141.2 5.5 L141.2 2.5 L170.6 -14.5 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M97.9 -19.5 L141.2 5.5 L141.2 2.5 L97.9 -22.5 Z" fill="#F3F6FA" stroke="#37383D" stroke-width="1.4" /><path d="M127.3 -39.5 L170.6 -14.5 L141.2 2.5 L97.9 -22.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M150.7 -24.0 L144.6 -20.5 L144.6 -61.5 L150.7 -65.0 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M137.7 -24.5 L144.6 -20.5 L144.6 -61.5 L137.7 -65.5 Z" fill="#EEF2F7" stroke="#37383D" stroke-width="1.4" /><path d="M143.8 -69.0 L150.7 -65.0 L144.6 -61.5 L137.7 -65.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M204.4 -24.0 L199.2 -21.0 L199.2 -113.0 L204.4 -116.0 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.6" /><path d="M74.5 -93.0 L199.2 -21.0 L199.2 -113.0 L74.5 -185.0 Z" fill="#fff" stroke="#37383D" stroke-width="1.6" /><path d="M79.7 -188.0 L204.4 -116.0 L199.2 -113.0 L74.5 -185.0 Z" fill="#fff" stroke="#37383D" stroke-width="1.6" /><path d="M78.8 -177.5 L194.9 -110.5 L194.9 -32.5 L78.8 -99.5 Z" fill="#F7FAFF" stroke="#37383D" stroke-width="1" /><g transform="matrix(0.8660 0.5000 0.0000 1.0000 78.81 -177.50)"><line x1="0" y1="10" x2="134" y2="10" stroke="#37383D" stroke-width=".8"/><circle cx="6" cy="5" r="1.6" fill="none" stroke="#37383D" stroke-width=".8"/><circle cx="12" cy="5" r="1.6" fill="none" stroke="#37383D" stroke-width=".8"/><circle cx="18" cy="5" r="1.6" fill="none" stroke="#37383D" stroke-width=".8"/><line x1="30" y1="10" x2="30" y2="78" stroke="#37383D" stroke-width=".8"/><line x1="6" y1="20" x2="22" y2="20" stroke="#37383D" stroke-width=".9" stroke-linecap="round"/><line x1="6" y1="28" x2="16" y2="28" stroke="#37383D" stroke-width=".9" stroke-linecap="round"/><line x1="6" y1="36" x2="22" y2="36" stroke="#37383D" stroke-width=".9" stroke-linecap="round"/><line x1="6" y1="44" x2="16" y2="44" stroke="#37383D" stroke-width=".9" stroke-linecap="round"/><line x1="6" y1="52" x2="22" y2="52" stroke="#37383D" stroke-width=".9" stroke-linecap="round"/><text x="38" y="24" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#37383D">&gt; ask("why?")</text><line x1="38" y1="33" x2="98" y2="33" stroke="#37383D" stroke-width=".8" stroke-linecap="round" opacity=".5"/><line x1="38" y1="49" x2="118" y2="49" stroke="#5A75FB" stroke-width="1.6" stroke-linecap="round"/><line x1="38" y1="56" x2="96" y2="56" stroke="#5A75FB" stroke-width="1.6" stroke-linecap="round"/><line x1="38" y1="66" x2="80" y2="66" stroke="#37383D" stroke-width=".8" stroke-linecap="round" opacity=".5"/><rect class="iso-caret" x="84" y="62" width="4" height="7" fill="#5A75FB"/></g><path d="M133.4 23.0 L100.5 42.0 L100.5 39.0 L133.4 20.0 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M24.2 -2.0 L100.5 42.0 L100.5 39.0 L24.2 -5.0 Z" fill="#F3F6FA" stroke="#37383D" stroke-width="1.4" /><path d="M57.2 -24.0 L133.4 20.0 L100.5 39.0 L24.2 -5.0 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M57.2 -20.4 L60.9 -18.3 L56.6 -15.8 L52.9 -18.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M62.3 -17.5 L66.0 -15.3 L61.7 -12.9 L58.0 -15.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M67.4 -14.5 L71.1 -12.4 L66.8 -9.9 L63.1 -12.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M72.4 -11.6 L76.2 -9.4 L71.9 -7.0 L68.2 -9.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M77.5 -8.6 L81.3 -6.5 L77.0 -4.0 L73.3 -6.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M82.6 -5.7 L86.4 -3.5 L82.1 -1.1 L78.4 -3.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M87.7 -2.7 L91.5 -0.6 L87.2 1.8 L83.5 -0.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M92.8 0.2 L96.5 2.3 L92.3 4.8 L88.6 2.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M97.9 3.1 L101.6 5.3 L97.4 7.7 L93.7 5.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M103.0 6.1 L106.7 8.2 L102.5 10.7 L98.8 8.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M108.1 9.0 L111.8 11.2 L107.6 13.6 L103.9 11.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M113.2 12.0 L116.9 14.1 L112.7 16.6 L109.0 14.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M118.3 14.9 L122.0 17.1 L117.8 19.5 L114.1 17.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M123.4 17.9 L127.1 20.0 L122.9 22.4 L119.2 20.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M51.5 -17.2 L55.3 -15.0 L51.0 -12.6 L47.3 -14.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M56.6 -14.2 L60.4 -12.1 L56.1 -9.6 L52.4 -11.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M61.7 -11.3 L65.5 -9.1 L61.2 -6.7 L57.5 -8.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M66.8 -8.3 L70.5 -6.2 L66.3 -3.7 L62.6 -5.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M71.9 -5.4 L75.6 -3.2 L71.4 -0.8 L67.7 -2.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M77.0 -2.4 L80.7 -0.3 L76.5 2.1 L72.8 -0.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M82.1 0.5 L85.8 2.6 L81.6 5.1 L77.9 2.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M87.2 3.4 L90.9 5.6 L86.7 8.0 L83.0 5.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M92.3 6.4 L96.0 8.5 L91.8 11.0 L88.1 8.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M97.4 9.3 L101.1 11.5 L96.9 13.9 L93.2 11.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M102.5 12.3 L106.2 14.4 L102.0 16.9 L98.3 14.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M107.6 15.2 L111.3 17.4 L107.1 19.8 L103.4 17.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M112.7 18.2 L116.4 20.3 L112.2 22.7 L108.5 20.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M117.8 21.1 L121.5 23.2 L117.3 25.7 L113.6 23.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M45.9 -13.9 L49.6 -11.8 L45.4 -9.3 L41.7 -11.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M51.0 -11.0 L54.7 -8.8 L50.5 -6.4 L46.8 -8.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M56.1 -8.0 L59.8 -5.9 L55.6 -3.5 L51.9 -5.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M61.2 -5.1 L64.9 -2.9 L60.7 -0.5 L57.0 -2.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M66.3 -2.1 L70.0 -0.0 L65.8 2.4 L62.1 0.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M71.4 0.8 L75.1 2.9 L70.9 5.4 L67.2 3.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M76.5 3.7 L80.2 5.9 L76.0 8.3 L72.3 6.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M81.6 6.7 L85.3 8.8 L81.1 11.3 L77.4 9.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M86.7 9.6 L90.4 11.8 L86.2 14.2 L82.5 12.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M91.8 12.6 L95.5 14.7 L91.3 17.1 L87.6 15.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M96.9 15.5 L100.6 17.7 L96.4 20.1 L92.7 17.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M102.0 18.5 L105.7 20.6 L101.5 23.0 L97.8 20.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M107.1 21.4 L110.8 23.5 L106.6 26.0 L102.9 23.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M112.2 24.3 L115.9 26.5 L111.7 28.9 L108.0 26.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M40.3 -10.7 L44.0 -8.5 L39.8 -6.1 L36.1 -8.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M45.4 -7.7 L49.1 -5.6 L44.9 -3.2 L41.2 -5.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M50.5 -4.8 L54.2 -2.7 L50.0 -0.2 L46.3 -2.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M55.6 -1.9 L59.3 0.3 L55.1 2.7 L51.4 0.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M60.7 1.1 L64.4 3.2 L60.2 5.7 L56.5 3.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M65.8 4.0 L69.5 6.2 L65.3 8.6 L61.6 6.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M70.9 7.0 L74.6 9.1 L70.4 11.6 L66.7 9.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M76.0 9.9 L79.7 12.1 L75.5 14.5 L71.8 12.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M81.1 12.9 L84.8 15.0 L80.6 17.4 L76.9 15.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M86.2 15.8 L89.9 17.9 L85.7 20.4 L82.0 18.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M91.3 18.7 L95.0 20.9 L90.8 23.3 L87.1 21.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M96.4 21.7 L100.1 23.8 L95.9 26.3 L92.2 24.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M101.5 24.6 L105.2 26.8 L101.0 29.2 L97.3 27.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M106.6 27.6 L110.3 29.7 L106.1 32.2 L102.4 30.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M34.7 -7.4 L38.4 -5.3 L34.2 -2.9 L30.5 -5.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M39.8 -4.5 L43.5 -2.4 L39.3 0.1 L35.6 -2.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M44.9 -1.6 L48.6 0.6 L44.4 3.0 L40.7 0.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M50.0 1.4 L53.7 3.5 L49.5 6.0 L45.8 3.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M55.1 4.3 L58.8 6.5 L54.6 8.9 L50.9 6.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M60.2 7.3 L63.9 9.4 L59.7 11.9 L56.0 9.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M65.3 10.2 L79.2 18.2 L75.0 20.7 L61.1 12.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M80.6 19.0 L84.3 21.2 L80.1 23.6 L76.4 21.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M85.7 22.0 L89.4 24.1 L85.2 26.6 L81.5 24.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M90.8 24.9 L94.5 27.1 L90.3 29.5 L86.6 27.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M95.9 27.9 L99.6 30.0 L95.4 32.5 L91.7 30.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M101.0 30.8 L104.7 33.0 L100.5 35.4 L96.7 33.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M155.9 66.0 L124.7 84.0 L124.7 82.5 L155.9 64.5 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M90.1 64.0 L124.7 84.0 L124.7 82.5 L90.1 62.5 Z" fill="#F3F6FA" stroke="#37383D" stroke-width="1.4" /><path d="M121.2 44.5 L155.9 64.5 L124.7 82.5 L90.1 62.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M119.5 51.5 L142.0 64.5" stroke="#37383D" stroke-width="0.8" stroke-linecap="round" /><path d="M113.4 55.0 L130.8 65.0" stroke="#37383D" stroke-width="0.8" stroke-linecap="round" /><path d="M107.4 58.5 L119.5 65.5" stroke="#37383D" stroke-width="0.8" stroke-linecap="round" /><g transform="matrix(0.8660 0.5000 -0.8660 0.5000 94.40 50.00)"><rect x="0" y="0" width="16" height="22" rx="8" fill="#fff" stroke="#37383D" stroke-width="1.3"/><line x1="8" y1="1" x2="8" y2="9" stroke="#37383D" stroke-width="1"/><line x1="0.5" y1="9" x2="15.5" y2="9" stroke="#37383D" stroke-width="1"/></g><path d="M10.4 -26.0 L-41.6 4.0 L-41.6 0.0 L10.4 -30.0 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M-116.0 -39.0 L-41.6 4.0 L-41.6 0.0 L-116.0 -43.0 Z" fill="#F3F6FA" stroke="#37383D" stroke-width="1.4" /><path d="M-64.1 -73.0 L10.4 -30.0 L-41.6 0.0 L-116.0 -43.0 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M-62.4 -66.6 L-58.3 -64.3 L-61.7 -62.3 L-65.7 -64.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-57.1 -63.6 L-53.1 -61.2 L-56.5 -59.3 L-60.5 -61.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-51.9 -60.5 L-47.8 -58.2 L-51.2 -56.3 L-55.3 -58.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-46.6 -57.5 L-42.6 -55.2 L-46.0 -53.2 L-50.0 -55.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-41.4 -54.5 L-37.4 -52.2 L-40.8 -50.2 L-44.8 -52.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-36.2 -51.5 L-32.1 -49.2 L-35.5 -47.2 L-39.6 -49.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-30.9 -48.5 L-26.9 -46.1 L-30.3 -44.2 L-34.3 -46.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-25.7 -45.4 L-21.7 -43.1 L-25.0 -41.1 L-29.1 -43.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-20.4 -42.4 L-16.4 -40.1 L-19.8 -38.1 L-23.8 -40.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-15.2 -39.4 L-11.2 -37.0 L-14.6 -35.1 L-18.6 -37.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-10.0 -36.4 L-5.9 -34.0 L-9.3 -32.1 L-13.4 -34.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-4.7 -33.3 L-0.7 -31.0 L-4.1 -29.0 L-8.1 -31.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-67.0 -63.9 L-62.9 -61.6 L-66.3 -59.7 L-70.4 -62.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-61.7 -60.9 L-57.7 -58.6 L-61.1 -56.6 L-65.1 -59.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-56.5 -57.9 L-52.5 -55.6 L-55.8 -53.6 L-59.9 -55.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-51.2 -54.9 L-47.2 -52.5 L-50.6 -50.6 L-54.6 -52.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-46.0 -51.8 L-42.0 -49.5 L-45.4 -47.6 L-49.4 -49.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-40.8 -48.8 L-36.7 -46.5 L-40.1 -44.5 L-44.2 -46.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-35.5 -45.8 L-31.5 -43.5 L-34.9 -41.5 L-38.9 -43.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-30.3 -42.8 L-26.3 -40.4 L-29.7 -38.5 L-33.7 -40.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-25.0 -39.7 L-21.0 -37.4 L-24.4 -35.5 L-28.4 -37.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-19.8 -36.7 L-15.8 -34.4 L-19.2 -32.4 L-23.2 -34.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-14.6 -33.7 L-10.5 -31.4 L-13.9 -29.4 L-18.0 -31.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-9.3 -30.7 L-5.3 -28.3 L-8.7 -26.4 L-12.7 -28.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-71.6 -61.3 L-67.5 -59.0 L-70.9 -57.0 L-75.0 -59.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-66.3 -58.3 L-62.3 -55.9 L-65.7 -54.0 L-69.7 -56.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-61.1 -55.2 L-57.1 -52.9 L-60.5 -50.9 L-64.5 -53.3 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-55.8 -52.2 L-51.8 -49.9 L-55.2 -47.9 L-59.2 -50.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-50.6 -49.2 L-46.6 -46.9 L-50.0 -44.9 L-54.0 -47.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-45.4 -46.2 L-41.3 -43.8 L-44.7 -41.9 L-48.8 -44.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-40.1 -43.1 L-36.1 -40.8 L-39.5 -38.8 L-43.5 -41.2 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-34.9 -40.1 L-30.9 -37.8 L-34.3 -35.8 L-38.3 -38.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-29.7 -37.1 L-25.6 -34.8 L-29.0 -32.8 L-33.0 -35.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-24.4 -34.1 L-20.4 -31.7 L-23.8 -29.8 L-27.8 -32.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-19.2 -31.0 L-15.1 -28.7 L-18.5 -26.7 L-22.6 -29.1 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-13.9 -28.0 L-9.9 -25.7 L-13.3 -23.7 L-17.3 -26.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-76.2 -58.6 L-72.1 -56.3 L-75.5 -54.3 L-79.6 -56.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-70.9 -55.6 L-66.9 -53.3 L-70.3 -51.3 L-74.3 -53.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-65.7 -52.6 L-61.7 -50.2 L-65.1 -48.3 L-69.1 -50.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-60.5 -49.5 L-56.4 -47.2 L-59.8 -45.3 L-63.9 -47.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-55.2 -46.5 L-51.2 -44.2 L-54.6 -42.2 L-58.6 -44.6 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-50.0 -43.5 L-46.0 -41.2 L-49.3 -39.2 L-53.4 -41.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-44.7 -40.5 L-40.7 -38.1 L-44.1 -36.2 L-48.1 -38.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-39.5 -37.4 L-35.5 -35.1 L-38.9 -33.2 L-42.9 -35.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-34.3 -34.4 L-30.2 -32.1 L-33.6 -30.1 L-37.7 -32.5 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-29.0 -31.4 L-25.0 -29.1 L-28.4 -27.1 L-32.4 -29.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-23.8 -28.4 L-19.8 -26.0 L-23.1 -24.1 L-27.2 -26.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-18.5 -25.3 L-14.5 -23.0 L-17.9 -21.1 L-21.9 -23.4 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-80.8 -56.0 L-76.8 -53.6 L-80.2 -51.7 L-84.2 -54.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-75.5 -52.9 L-71.5 -50.6 L-74.9 -48.7 L-78.9 -51.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-70.3 -49.9 L-66.3 -47.6 L-69.7 -45.6 L-73.7 -47.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-65.1 -46.9 L-61.0 -44.6 L-64.4 -42.6 L-68.5 -44.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-59.8 -43.9 L-55.8 -41.5 L-59.2 -39.6 L-63.2 -41.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-54.6 -40.8 L-40.1 -32.5 L-43.5 -30.5 L-58.0 -38.9 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-38.9 -31.8 L-34.8 -29.4 L-38.2 -27.5 L-42.3 -29.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-33.6 -28.7 L-29.6 -26.4 L-33.0 -24.4 L-37.0 -26.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-28.4 -25.7 L-24.4 -23.4 L-27.8 -21.4 L-31.8 -23.8 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-23.1 -22.7 L-19.1 -20.4 L-22.5 -18.4 L-26.5 -20.7 Z" fill="#fff" stroke="#37383D" stroke-width="0.7" /><path d="M-72.7 -40.0 L-46.8 -25.0 L-60.6 -17.0 L-86.6 -32.0 Z" fill="#fff" stroke="#37383D" stroke-width="0.9" /><path d="M10.4 -30.0 L13.0 -31.5 L23.4 -101.5 L20.8 -100.0 Z" fill="#E6EBF2" stroke="#37383D" stroke-width="1.4" /><path d="M-53.7 -143.0 L20.8 -100.0 L23.4 -101.5 L-51.1 -144.5 Z" fill="#fff" stroke="#37383D" stroke-width="1.4" /><path d="M-64.1 -73.0 L10.4 -30.0 L20.8 -100.0 L-53.7 -143.0 Z" fill="#fff" stroke="#37383D" stroke-width="1.6" /><g transform="matrix(0.8660 0.5000 -0.1596 1.0750 -50.87 -136.70)"><rect x="0" y="0" width="78" height="57.115282384398824" fill="#F7FAFF" stroke="#37383D" stroke-width=".9"/><text x="6" y="12" font-family="SF Mono,Menlo,monospace" font-size="7" fill="#5A75FB">notes.md</text><line x1="6" y1="22" x2="60" y2="22" stroke="#37383D" stroke-width=".9" stroke-linecap="round" opacity="0.75"/><line x1="6" y1="30" x2="48" y2="30" stroke="#37383D" stroke-width=".9" stroke-linecap="round" opacity="0.75"/><line x1="6" y1="38" x2="36" y2="38" stroke="#37383D" stroke-width=".9" stroke-linecap="round" opacity="0.4"/><line x1="6" y1="46" x2="60" y2="46" stroke="#37383D" stroke-width=".9" stroke-linecap="round" opacity="0.4"/><line x1="6" y1="54" x2="48" y2="54" stroke="#37383D" stroke-width=".9" stroke-linecap="round" opacity="0.4"/><line x1="6" y1="62" x2="34" y2="62" stroke="#5A75FB" stroke-width="1.4" stroke-linecap="round" opacity=".7"/></g></g><g class="iso-bulb" transform="translate(155.9 -186.0)" fill="none" stroke="#5A75FB" stroke-width="1.3" stroke-linecap="round"><path d="M-6 0 a6 6 0 1 1 12 0 c0 3 -2.5 4.2 -2.5 7 h-7 c0 -2.8 -2.5 -4 -2.5 -7z"/><path d="M-3 10.5 h6 M-2 13 h4"/><path d="M0 -11 v-4 M-9 -8 l-3 -3 M9 -8 l3 -3 M-12 0 h-4 M12 0 h4" opacity=".7"/></g><text x="203.9" y="-160.0" font-family="SF Mono,Menlo,monospace" font-size="11" fill="#5A75FB" opacity=".55">{ idea }</text></svg>
+          </div>
+
+          <div class="hero-right">
+            <div class="signal">
+              <svg class="arc-text" aria-hidden="true" viewBox="0 0 330 330">
+                <path id="arcPath" d="M 22 326 A 262 262 0 0 1 326 -10" fill="none" />
+                <text><textPath href="#arcPath">REAL SCENARIOS · AGENT WORKFLOWS</textPath></text>
+              </svg>
+              <span aria-hidden="true" class="spark s1">✦</span>
+              <span aria-hidden="true" class="pill pill-dark">AI PM</span>
+              <span aria-hidden="true" class="pill pill-o p1">人机协同</span>
+              <span aria-hidden="true" class="pill pill-o p2">Agent 工作流</span>
+              <span aria-hidden="true" class="spark s2">✦</span>
+              <span aria-hidden="true" class="spark blue s3">✦</span>
+              <a href="#work" class="pill pill-blue">查看作品 ↗</a>
+            </div>
+
+            <h2 class="slogan">
+              <span class="l1"><span class="mono">CAGE · ECHO</span><span>AI <span class="x">×</span></span></span>
+              <span class="l2"><span class="fade-ink">PRODUCT</span></span>
+              <span class="l2"><span class="fade-ink">DELIVERY</span></span>
+            </h2>
+            <p class="hero-lead">我是张书洋，AI 产品经理。10 年以上互联网经验，从交互设计走到产品管理与 AI 产品实践；关注 Agent、人机协同与交付验证，把需求落成 PRD、交互原型和可运行的 Demo。</p>
+            <div class="hero-actions">
+              <a href="#work" class="btn btn-blue">查看作品</a>
+              <a href="#views" class="ghost-link">阅读我的产品观 →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="band-wrap" aria-hidden="true">
+        <div class="band">
+          <div class="band-track">
+            <span>Agent Loop</span><i>✦</i><span>人机协同</span><i>✦</i><span>需求定义</span><i>✦</i><span>RAG 知识库</span><i>✦</i><span>Multi-Agent</span><i>✦</i><span>PRD</span><i>✦</i><span>MVP</span><i>✦</i><span>Bad Case 归因</span><i>✦</i><span>Fallback</span><i>✦</i><span>Vibe Coding</span><i>✦</i>
+            <span>Agent Loop</span><i>✦</i><span>人机协同</span><i>✦</i><span>需求定义</span><i>✦</i><span>RAG 知识库</span><i>✦</i><span>Multi-Agent</span><i>✦</i><span>PRD</span><i>✦</i><span>MVP</span><i>✦</i><span>Bad Case 归因</span><i>✦</i><span>Fallback</span><i>✦</i><span>Vibe Coding</span><i>✦</i>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-foot">
+        <div class="container">
+          <p class="meta-text left">Observe the problem.<br>Ship the product.</p>
+          <p class="meta-text">CageEcho © / 让想法冲出笼子</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 01 关于 -->
+    <section id="about" aria-labelledby="about-title">
+      <div class="container">
+        <div class="about-grid reveal">
+          <div>
+            <span class="eyebrow">01 / About · 张书洋</span>
+            <h2 class="display" id="about-title">从交互设计，<br>走到 AI<br><span class="fade-blue">产品。</span></h2>
+            <figure class="portrait">
+              <img src="assets/portrait.jpg" alt="张书洋的证件照" width="413" height="531" loading="lazy">
+              <span class="pill pill-blue portrait-tag" aria-hidden="true">Hi, 我是书洋</span>
+            </figure>
+          </div>
+          <div class="about-body">
+            <p>我是 <strong>张书洋 / CageEcho</strong>，AI 产品经理。10 年以上互联网经验，覆盖需求调研、产品定位、MVP 定义、PRD、原型到上线验证。在 Beyond Dream Travel 主导行策方案生成平台，也通过途书旅记、知树等产品实践完成需求定义、原型与演示交付。</p>
+            <p class="education-line">首都师范大学 · 本科 ｜ 交互设计 → 产品经理 → AI 产品经理</p>
+            <div class="skill-tags">
+              <span>AI Agent 搭建</span><span>Multi-Agent 编排</span><span>Subagent</span><span>Agent Loop</span><span>Prompt 设计</span><span>RAG 与知识库</span><span>AI 评测体系</span><span>商业化改版</span><span>PRD 撰写</span><span>Vibe Coding</span>
+            </div>
+            <div class="project-links"><a href="assets/zhangshuyang-ai-pm-resume.pdf" target="_blank" rel="noopener">下载简历 PDF ↗</a><a href="https://github.com/CageEcho" target="_blank" rel="noopener noreferrer">GitHub ↗</a></div>
+          </div>
+        </div>
+        <div class="about-items">
+          <div class="about-item card reveal"><span class="content-label">Observe / 观察问题</span><div class="big">看见场景</div><h3>从一线流程里找问题</h3><p>跟进顾问接单、查资料和做方案的全过程，找出耗时长、容易出错的环节，整理成 User Story 和需求优先级。</p></div>
+          <div class="about-item card reveal"><span class="content-label">Decompose / 拆开机制</span><div class="big">串起流程</div><h3>把 AI 放进稳定的 Workflow</h3><p>把 Prompt、工具调用、结构化抽取、用户确认、Fallback 和结果回写串起来，明确 AI 和人各自负责哪一步。</p></div>
+          <div class="about-item card reveal"><span class="content-label">Build / 做出产品</span><div class="big fade-blue">交付验证</div><h3>用 MVP 和评测说话</h3><p>从业务目标倒推 Roadmap，先用 MVP 验证核心假设；围绕需求理解、召回和事实准确性建评测集，按 Bad Case 迭代。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 经历 -->
+    <section id="experience" class="section-alt" aria-labelledby="experience-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">02 / Experience · 2014—2026</span><h2 class="display" id="experience-title">十年，从交互走到 <em>AI 产品</em></h2></div>
+          <p>从题库、托福 App 的交互设计，到宝马电商平台的产品管理，再到高端旅行服务的 AI 产品规划。</p>
+        </div>
+
+        <article class="experience-card card reveal">
+          <div class="experience-top"><h3>Beyond Dream Travel</h3><span>2023.08—2026.07</span></div>
+          <p class="role-label">AI 产品经理</p>
+          <p>负责高端旅行服务数字化与 AI 产品规划，服务旅行顾问和定制游客户，覆盖预订、查询与方案定制。梳理需求沟通、资源筛选和行程编排流程，定义角色权限与功能架构；推进知识库与 AI 应用建设，设计人工确认和异常处理规则。</p>
+          <div class="case-metrics"><span>资料查询 10 → 2 分钟</span><span>抽样回答准确率约 88%</span><span>首次方案响应 −50%</span></div>
+          <details class="project-detail">
+            <summary>具体做了哪些事？</summary>
+            <div>
+              <p><b>AI 产品战略与规划：</b>按使用频率、ROI 和出错风险评估知识问答、信息抽取和方案生成场景，确定先内部高频、后客户侧的推进顺序，规划行策方案生成平台并明确人机分工。</p>
+              <p><b>知识库建设：</b>将约 300 家酒店、40 余家供应商、1,500 余条资料沉淀为结构化 Knowledge Base，制定来源标注、更新与人工校验标准；抽样回答准确率约 88%，常用资料查询由 10 分钟缩短到 2 分钟内。</p>
+              <p><b>AI 应用落地与人机协同：</b>协调顾问与研发推进内部试用，在约 100 个客户咨询中试行“AI 起草、顾问修改”的方式，首次方案响应时间缩短约 50%。</p>
+              <p><b>用户调研与版本迭代：</b>访谈顾问、收集客户需求，整理成 User Story 和需求优先级；维护 Backlog，按价值与成本排期，输出 PRD 和原型，组织评审，跟进开发、测试到上线。</p>
+            </div>
+          </details>
+          <div class="project-links"><a href="#case-xingce">查看行策案例 ↓</a></div>
+        </article>
+
+        <article class="experience-card card reveal">
+          <div class="experience-top"><h3>前线网络信息技术（北京）有限公司</h3><span>2019.11—2023.06</span></div>
+          <p class="role-label">产品经理</p>
+          <p>参与宝马领悦数字化项目，负责宝马电商和经销商业务运营平台 DMO。工作从 UI 和交互设计逐步转到产品管理，梳理角色、业务流程和需求，把客户诉求落成功能架构、产品原型和 PRD；协调客户、业务、设计、研发和测试团队，用需求清单和版本规划统一管理变更，跟进到上线。</p>
+        </article>
+
+        <div class="exp-pair">
+          <article class="experience-card card reveal">
+            <div class="experience-top"><h3>北京博智天下信息技术有限公司</h3><span>2017.09—2019.05</span></div>
+            <p class="role-label">交互设计</p>
+            <p>负责朗播托福 App 的交互设计，把学员、教师和教研的需求整理成学习、练习、提交、反馈和学习记录的完整流程，并根据用户反馈调整信息层级和操作路径。</p>
+          </article>
+          <article class="experience-card card reveal">
+            <div class="experience-top"><h3>北京贞观雨科技有限公司</h3><span>2014.06—2017.05</span></div>
+            <p class="role-label">交互设计</p>
+            <p>负责题库产品的交互设计，规划找题、答题、看解析和错题复习的流程；制定各题型的作答与反馈规则，考虑提交、批改和中途异常退出等状态。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 作品 -->
+    <section id="work" aria-labelledby="work-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">03 / Selected Work</span><h2 class="display" id="work-title">让作品说明<em>判断</em></h2></div>
+          <p>从真实业务到个人实践。展开案例，看我如何定义问题、分配人机职责，并把方案推进到可以体验的产品。</p>
+        </div>
+
+        <div class="project-list">
+          <article class="project reveal" id="case-xingce">
+            <div><span class="project-num">01 / BUSINESS · 2026.04—2026.07</span><h3 class="project-title">行策</h3><p class="project-meta">高端定制旅行方案生成平台 · AI 产品经理</p></div>
+            <div class="project-body">
+              <p>供应链资源、目的地知识和顾问经验原本分散在各处：需求经常收集不全，查资源要翻好几个地方，方案全靠人工编排。行策把这些整合起来，客户用自然语言描述需求，系统生成顾问可以直接修改的旅行方案。</p>
+              <div class="case-metrics"><span>初稿 120 → 35 分钟</span><span>一次通过率 43% → 67%</span><span>关键需求识别 90%</span></div>
+              <details class="project-detail">
+                <summary>查看我的判断、动作与交付</summary>
+                <div>
+                  <p><b>产品定位与 MVP：</b>拆解需求沟通、资源查询、行程设计和报价销售四个环节，确定首版能力，报价仍由顾问把关；输出功能架构、产品原型和 PRD。</p>
+                  <p><b>Agent 流程与人机分工：</b>需求采集 → 信息补全 → 知识检索 → 行程规划 → 产品推荐 → 人工确认，六步明确 AI 和顾问各管哪一步。模型只能从候选资源池中选择，具体信息由服务端校验后回填；模型异常时自动切换为规则编排。</p>
+                  <p><b>需求建模与知识架构：</b>为目的地、人数、日期、预算、酒店和兴趣偏好设置信息槽位和追问规则，需求不完整时不允许生成；按酒店、房型、车辆、餐厅、门票、路线和历史方案定义字段标准与标签体系，供 RAG 召回统一调用。</p>
+                  <p><b>评测与结果：</b>从需求理解、资源召回、事实准确性、行程合理性和方案完整度五个方面评分，Bad Case 按知识缺失、检索偏差和行程冲突归因；20 条用例通过 19 条。用 30 组脱敏历史需求测试，方案初稿制作时间降低约 71%。</p>
+                </div>
+              </details>
+              <div class="project-links"><a href="https://sbdn49ebov6bsukfs2496.apigateway-cn-beijing.volceapi.com/" target="_blank" rel="noopener noreferrer">在线工作台 ↗</a><a href="https://github.com/CageEcho/xingce-travel-planner" target="_blank" rel="noopener noreferrer">开源代码 ↗</a></div>
+            </div>
+          </article>
+
+          <article class="project reveal" id="case-tushu">
+            <div><span class="project-num">02 / PERSONAL · 2026.08—至今</span><h3 class="project-title">途书旅记</h3><p class="project-meta">AI 旅行攻略与地图动线助手 · 个人项目</p></div>
+            <div class="project-body">
+              <p>自由行用户收藏攻略后，仍要逐个搜地点、核对位置、自己拼地图路线。途书旅记把收藏的攻略变成可查看、可导航、可分享的出行方案。</p>
+              <div class="case-metrics"><span>攻略 → 地图</span><span>DeepSeek 抽取 + 百度 POI</span><span>按天动线 · 长图导出</span></div>
+              <details class="project-detail">
+                <summary>查看我的判断、动作与交付</summary>
+                <div>
+                  <p><b>产品定位：</b>聚焦“攻略到地图”的核心任务，拆成地点获取、确认纠错、路线展示和导航交付四步；首版保留攻略原有的分天与顺序，明确 MVP 范围、关键状态和异常处理。</p>
+                  <p><b>AI 识别与人工确认：</b>DeepSeek 结构化抽取地点，再匹配百度 POI，展示名称、地址、地图位置与候选结果；提供换地点、调整分天和跳过入口，由用户处理同名或定位错误。</p>
+                  <p><b>异常处理：</b>对取数不稳定、模型失败和地点缺坐标等情况，设计快照兜底、有限重试与补充确认。</p>
+                  <p><b>边界：</b>区分固定演示与实时能力，公开文档写明预存交通住宿数据与实时能力的边界。</p>
+                </div>
+              </details>
+              <div class="project-links"><a href="https://github.com/CageEcho/Tushu-Travel-book" target="_blank" rel="noopener noreferrer">开源代码 ↗</a></div>
+            </div>
+          </article>
+
+          <article class="project reveal" id="case-zhishu">
+            <div><span class="project-num">03 / HACKATHON · 2026.09</span><h3 class="project-title">知树</h3><p class="project-meta">AI 原生个人知识树 · 知乎黑客松 · 4 人团队产品负责人</p></div>
+            <div class="project-body">
+              <p>知识消费中收藏多、输出少。知树让 AI 从理由、异见和边界三个角度追问，把回答整理为带出处的文章，让收藏长成自己的观点。</p>
+              <div class="case-metrics"><span>708 支队伍入围总决赛</span><span>188 名种子用户</span><span>48 小时交付</span></div>
+              <details class="project-detail">
+                <summary>查看我的判断、动作与交付</summary>
+                <div>
+                  <p><b>用户调研与需求验证：</b>设计问卷并线下投放，围绕收藏回看、想法整理和写作行为验证需求，回收有效问卷 78 份，意向用户占比 69.2%；据此输出 PRD，定义五项核心功能与非目标范围，开发前冻结需求。</p>
+                  <p><b>项目管理与交付：</b>按产品开发、UI 视觉、AIGC 动画和文档调研拆分模块，设置需求冻结、素材联调和演示彩排三个里程碑；用 Codex 与 Claude Code 独立完成 Demo 开发。</p>
+                  <p><b>路演与转化：</b>负责 8 页决赛路演的叙事与视觉，以“收藏夹生长为知识树”呈现痛点、方案与愿景；现场开放免登录 Demo，转化 188 名种子用户入群。</p>
+                  <p><b>冷启动与开源：</b>Demo 部署于火山引擎 veFaaS，代码在 GitHub 开源，13 项单元测试覆盖数据完整性、状态迁移和保存失败；知乎产品说明获得 13 次赞同和真实使用反馈。</p>
+                </div>
+              </details>
+              <div class="project-links"><a href="https://s4un71nck60neho2ichmh.apigateway-cn-beijing.volceapi.com/" target="_blank" rel="noopener noreferrer">在线 Demo ↗</a><a href="https://github.com/CageEcho/zhihu-zhishu" target="_blank" rel="noopener noreferrer">开源代码 ↗</a></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 更多实践 -->
+    <section id="more" class="section-alt" aria-labelledby="more-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">04 / More Builds</span><h2 class="display" id="more-title">更多<em>动手</em>实践</h2></div>
+          <p>小红书记录思考，GitHub 承接作品。这些是比赛和业余时间做出来的工具与原型。</p>
+        </div>
+        <div class="note-list reveal">
+          <details class="note"><summary><span class="note-number">01</span><div><span class="content-label">飞书 Agent · 比赛项目</span><strong>SlideRank：给团队里的 PPT 排一份带证据的必读榜</strong></div><span class="expand-icon">+</span></summary><div class="note-content"><p>群聊提问 → 读取飞书文件夹里的真实演示文稿 → AI 分析并选出 Top 3 → 返回带页码原文证据的必读榜 → 预览周报 → 人工确认后才创建飞书文档并回发群聊。</p><p>程序会把每条 AI 引用反查到原页，页码不存在或引文对不上时拒绝发布；重复回调不会重复建文档。</p><a class="project-link" href="https://github.com/CageEcho/SlideRank" target="_blank" rel="noopener noreferrer">查看 SlideRank ↗</a></div></details>
+          <details class="note"><summary><span class="note-number">02</span><div><span class="content-label">社区产品 · 高保真原型</span><strong>口骇：比赛会结束，作品不该</strong></div><span class="expand-icon">+</span></summary><div class="note-content"><p>黑客松赛事聚合 + 作品社区。第一阶段跑通赛事聚合闭环：登记网址或用户投稿 → 抓取 → 模型抽取 → 规则校验（含原文证据比对）→ 去重 → 自动上线或进入人工审核；审核台把字段和原文依据并排显示。</p><p>原型使用示例数据，真实模型冒烟测试尚待验收。</p><a class="project-link" href="https://cageecho.github.io/kouhai-prototype/" target="_blank" rel="noopener noreferrer">打开原型 ↗</a></div></details>
+          <details class="note"><summary><span class="note-number">03</span><div><span class="content-label">交付体验 · 旅行方案</span><strong>Travel-book：把旅行行程做成一本可以翻的书</strong></div><span class="expand-icon">+</span></summary><div class="note-content"><p>客户打开后先看到书架，点开像翻真书一样逐页看方案。整本书只有一个 HTML 文件，照片和字体都打包在里面，不联网也能打开。示例为虚构的“土耳其 12 日”方案，共 28 页。</p><a class="project-link" href="https://cageecho.github.io/Travel-book/" target="_blank" rel="noopener noreferrer">在线翻阅 ↗</a></div></details>
+          <details class="note"><summary><span class="note-number">04</span><div><span class="content-label">桌面应用 · 本地优先</span><strong>哇塞·超级桌面：文件、知识库与 AI 的无限画布</strong></div><span class="expand-icon">+</span></summary><div class="note-content"><p>Electron + React 的本地优先桌面应用，用无限画布组织文件、知识库、关系连线和 AI 分析结果；支持 PDF、DOCX、Markdown 等文本解析与中文检索，可接 OpenAI、DeepSeek 等兼容接口。</p><a class="project-link" href="https://github.com/CageEcho/wow-super-desktop" target="_blank" rel="noopener noreferrer">查看项目 ↗</a></div></details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 产品观 -->
+    <section id="views" aria-labelledby="views-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <div><span class="eyebrow">05 / Point of View</span><h2 class="display" id="views-title">让 AI 执行，<br>让人<em>把关</em></h2></div>
+          <p>AI 产品的难点不在于能不能生成，而在于生成的东西能不能用、出错时有没有人兜得住。</p>
+        </div>
+        <div class="resource-grid">
+          <article class="resource-card card reveal"><span class="content-label">01 / 需求完整</span><h3>信息不全，<br>就先别生成</h3><p>行策为目的地、人数、日期、预算等设置信息槽位和追问规则，区分必填与可选，需求不完整时不允许生成方案。</p></article>
+          <article class="resource-card card reveal"><span class="content-label">02 / 可控输出</span><h3>模型只从<br>候选池里选</h3><p>关键资源和价格保留人工审核，模型只能从候选资源池中选择，具体信息由服务端校验后回填；模型异常时切换为规则编排。</p></article>
+          <article class="resource-card card reveal"><span class="content-label">03 / 诚实交付</span><h3>分清演示<br>与真实能力</h3><p>途书旅记、知树都在文档里写明哪些是固定演示、哪些是实时能力。验收标准先定好，评测结果如实写。</p></article>
+        </div>
+        <div class="quote-band reveal"><p>让想法冲出笼子，<em>让作品留下回声。</em></p></div>
+      </div>
+    </section>
+
+    <!-- 06 联系 -->
+    <section id="contact" class="section-alt iso-grid" aria-labelledby="contact-title">
+      <div class="container">
+        <span class="eyebrow">06 / The Next Conversation</span>
+        <div class="contact-panel card reveal">
+          <div>
+            <h2 class="contact-title" id="contact-title">Let's<br><span class="fade-blue">Build.</span></h2>
+            <p>正在寻找 AI 产品经理机会，随时到岗。欢迎交流 AI 产品、Agent 落地与合作。</p>
+            <a class="contact-mail" href="mailto:zsysabre@163.com">zsysabre@163.com</a>
+            <div class="contact-actions">
+              <a href="mailto:zsysabre@163.com" class="btn btn-blue">邮件联系</a>
+              <a href="assets/zhangshuyang-ai-pm-resume.pdf" target="_blank" rel="noopener" class="btn btn-ghost">我的简历 ↗</a>
+            </div>
+            <div class="project-links">
+              <a href="https://www.xiaohongshu.com/user/profile/5c34365e0000000005039502" target="_blank" rel="noopener noreferrer">小红书 · 笼中对 ↗</a>
+              <a href="https://github.com/CageEcho" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+            </div>
+          </div>
+          <div class="contact-art" aria-hidden="true">
+            <span class="pill pill-o c1">随时到岗</span>
+            <span class="pill pill-blue c2">一起聊聊 ↗</span>
+            <span class="pill pill-dark c3">AI PM</span>
+            <span class="spark">✦</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p class="meta-text">© <span id="year"></span> 张书洋 Zhang Shuyang · AI Product Manager</p>
+      <p class="meta-text">CageEcho © / Let ideas out of the cage.</p>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop" aria-label="回到顶部">↑</button>
+  <style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>
+  <script>
+    // ===== 菜单 =====
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const closeMenu = () => { navLinks.classList.remove('open'); menuToggle.setAttribute('aria-expanded', 'false'); };
+    menuToggle.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); menuToggle.setAttribute('aria-expanded', String(open)); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && navLinks.classList.contains('open')) { closeMenu(); menuToggle.focus(); } });
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ===== 回到顶部 =====
+    const backTop = document.getElementById('backTop');
+    window.addEventListener('scroll', () => backTop.classList.toggle('show', window.scrollY > 500), { passive: true });
+    backTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // ===== 进入动画 =====
+    const io = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.12 }) : null;
+    document.querySelectorAll('.reveal').forEach(el => io ? io.observe(el) : el.classList.add('in'));
+  </script>
+</body>
+</html>
